@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"flag"
 	"os"
-	"trainspotter/departure"
+	"github.com/DanShu93/trainspotter/departure"
 )
 
 func main() {
