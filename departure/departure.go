@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"encoding/json"
+	"net/url"
 )
 
 type direction struct {
@@ -42,21 +43,28 @@ func (d *direction) getDepartureTime(lineName string) (time.Time, error) {
 }
 
 func GetDepartureTime(origin, destination, apiKey, transitMode, lineName string) (time.Time, error) {
-	url := createURL(origin, destination, apiKey, transitMode)
-	var direction direction
+	query := createQuery(origin, destination, apiKey, transitMode)
 
-	getJson(url, &direction)
+	var direction direction
+	getJson(query, &direction)
 
 	depTime, err := direction.getDepartureTime(lineName)
 
 	return depTime, err
 }
 
-func createURL(origin, destination, apiKey, transitMode string) string {
+func createQuery(origin, destination, apiKey, transitMode string) string {
 	baseUrl := "https://maps.googleapis.com/maps/api/directions/json"
-	url := fmt.Sprintf("%s?origin=%s&destination=%s&key=%s&mode=transit&transit_mode=%s&language=en&alternatives=true", baseUrl, origin, destination, apiKey, transitMode)
+	query := fmt.Sprintf(
+		"%s?origin=%s&destination=%s&key=%s&mode=transit&transit_mode=%s&language=en&alternatives=true",
+		baseUrl,
+		url.QueryEscape(origin),
+		url.QueryEscape(destination),
+		url.QueryEscape(apiKey),
+		url.QueryEscape(transitMode),
+	)
 
-	return url
+	return query
 }
 
 func getJson(url string, target interface{}) error {
