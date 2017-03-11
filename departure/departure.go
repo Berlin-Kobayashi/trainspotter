@@ -58,8 +58,8 @@ func (d *direction) getDepartureTime(lineName string) (time.Time, error) {
 	return time.Time{}, fmt.Errorf("No route found for line %s", lineName)
 }
 
-func GetDepartureTime(origin, destination, apiKey, transitMode, lineName string) (time.Time, error) {
-	query := createQuery(origin, destination, apiKey, transitMode)
+func GetDepartureTime(origin, destination, apiKey, transitMode, lineName string, desiredDepTime time.Time) (time.Time, error) {
+	query := createQuery(origin, destination, apiKey, transitMode, desiredDepTime)
 
 	var direction direction
 	getJson(query, &direction)
@@ -69,11 +69,12 @@ func GetDepartureTime(origin, destination, apiKey, transitMode, lineName string)
 	return depTime, err
 }
 
-func createQuery(origin, destination, apiKey, transitMode string) string {
+func createQuery(origin, destination, apiKey, transitMode string, desiredDepTime time.Time) string {
 	baseUrl := "https://maps.googleapis.com/maps/api/directions/json"
 	query := fmt.Sprintf(
-		"%s?origin=%s&destination=%s&key=%s&mode=transit&transit_mode=%s&language=en&alternatives=true",
+		"%s?departure_time=%d&origin=%s&destination=%s&key=%s&mode=transit&transit_mode=%s&language=en&alternatives=true",
 		baseUrl,
+		desiredDepTime.Unix(),
 		url.QueryEscape(origin),
 		url.QueryEscape(destination),
 		url.QueryEscape(apiKey),

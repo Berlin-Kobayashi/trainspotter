@@ -9,7 +9,8 @@ func Watch(duration, throttle, bufferTime int, apiKey, origin, destination, tran
 	ticker := time.NewTicker(time.Second * time.Duration(throttle))
 	go func() {
 		for range ticker.C {
-			depTime, err := GetDepartureTime(origin, destination, apiKey, transitMode, lineName)
+			desiredDepTime := time.Now().Add(time.Duration(bufferTime) * time.Second)
+			depTime, err := GetDepartureTime(origin, destination, apiKey, transitMode, lineName, desiredDepTime)
 			if err != nil {
 				fmt.Printf("ERROR %s\n", err)
 			} else {
