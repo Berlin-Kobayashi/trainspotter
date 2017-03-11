@@ -5,17 +5,17 @@ import (
 	"fmt"
 )
 
-func Watch(duration, throttle, bufferTime int, apiKey, origin, destination, transitMode, lineName string) {
+func Watch(duration, throttle, bufferTime, offsetTime int, apiKey, origin, destination, transitMode, lineName string) {
 	ticker := time.NewTicker(time.Second * time.Duration(throttle))
 	go func() {
 		for range ticker.C {
-			desiredDepTime := time.Now().Add(time.Duration(bufferTime) * time.Second)
+			desiredDepTime := time.Now().Add(time.Duration(offsetTime) * time.Second)
 			depTime, err := GetDepartureTime(origin, destination, apiKey, transitMode, lineName, desiredDepTime)
 			if err != nil {
 				fmt.Printf("ERROR %s\n", err)
 			} else {
 				until := time.Until(depTime)
-				untilSeconds := int(until.Seconds()) - bufferTime
+				untilSeconds := int(until.Seconds()) - offsetTime
 
 				if untilSeconds < bufferTime {
 					fmt.Printf("GO %d\n", untilSeconds)
