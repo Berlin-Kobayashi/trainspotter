@@ -54,7 +54,7 @@ func GetDepartureTime(origin, destination, apiKey, transitMode, lineName string)
 
 func createURL(origin, destination, apiKey, transitMode string) string {
 	baseUrl := "https://maps.googleapis.com/maps/api/directions/json"
-	url := fmt.Sprintf("%s?origin=%s&destination=%s&key=%s&mode=transit&transit_mode=%s&language=en", baseUrl, origin, destination, apiKey, transitMode)
+	url := fmt.Sprintf("%s?origin=%s&destination=%s&key=%s&mode=transit&transit_mode=%s&language=en&alternatives=true", baseUrl, origin, destination, apiKey, transitMode)
 
 	return url
 }
