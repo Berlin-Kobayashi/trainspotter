@@ -1,4 +1,4 @@
-#Timewindow
+#Trainspotter
 
 ## License
 
