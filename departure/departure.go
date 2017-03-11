@@ -21,6 +21,7 @@ type direction struct {
 						ShortName string `json:"short_name"`
 					}
 				} `json:"transit_details"`
+				TravelMode string `json:"travel_mode"`
 			}
 		}
 	}
@@ -32,10 +33,25 @@ func (d *direction) getDepartureTime(lineName string) (time.Time, error) {
 	}
 
 	for _, route := range d.Routes {
-		if len(route.Legs) == 1 && len(route.Legs[0].Steps) == 1 && route.Legs[0].Steps[0].TransitDetails.Line.ShortName == lineName {
-			departureTime := time.Unix(route.Legs[0].Steps[0].TransitDetails.DepartureTime.Value, 0)
+		if len(route.Legs) == 1 {
+			transitSteps := 0
+			hasLine := false
+			var depTimestamp int64
+			for _, step := range route.Legs[0].Steps {
+				if step.TravelMode == "TRANSIT" {
+					transitSteps++
+					if step.TransitDetails.Line.ShortName == lineName {
+						hasLine = true
+						depTimestamp = step.TransitDetails.DepartureTime.Value
+					}
+				}
+			}
 
-			return departureTime, nil
+			if hasLine && transitSteps == 1 {
+				depTime := time.Unix(depTimestamp, 0)
+
+				return depTime, nil
+			}
 		}
 	}
 
