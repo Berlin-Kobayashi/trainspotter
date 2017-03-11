@@ -15,7 +15,7 @@ func Watch(duration, throttle, bufferTime int, apiKey, origin, destination, tran
 				fmt.Printf("ERROR %s\n", err)
 			} else {
 				until := time.Until(depTime)
-				untilSeconds := int(until.Seconds())
+				untilSeconds := int(until.Seconds()) - bufferTime
 
 				if untilSeconds < bufferTime {
 					fmt.Printf("GO %d\n", untilSeconds)
