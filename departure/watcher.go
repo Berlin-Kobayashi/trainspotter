@@ -23,7 +23,7 @@ func Watch(duration, throttle, bufferTime, offsetTime int, apiKey, origin, desti
 
 func printStatus(bufferTime, offsetTime int, apiKey, origin, destination, transitMode, lineName string) {
 	status := getStatus(bufferTime, offsetTime, apiKey, origin, destination, transitMode, lineName)
-	println(status)
+	fmt.Println(status)
 }
 
 func getStatus(bufferTime, offsetTime int, apiKey, origin, destination, transitMode, lineName string) string {
