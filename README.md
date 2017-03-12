@@ -29,9 +29,10 @@ If your Onion Omega is connected to an expansion dock you can pipe the output of
 Priority|Idea
 ---|---
 1|Add min buffer time option
-2|Add separate command for searching for place IDs and lineNames
-3|Rewrite frontend in go
-4|Add support for config files instead of arguments and options
+2|Use flag.FlagSet to enable sub commands
+3|Add separate command for searching for place IDs and lineNames
+4|Rewrite trafficlight in go
+5|Add support for config files instead of arguments and options
 
 ## License
 [**MIT**](http://www.opensource.org/licenses/mit-license.php)
