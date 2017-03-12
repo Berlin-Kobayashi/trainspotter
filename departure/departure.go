@@ -56,7 +56,7 @@ func (d *direction) getDepartureTime(lineNames []string) (time.Time, error) {
 		}
 	}
 
-	return time.Time{}, fmt.Errorf("No route found for lines %s", strings.Join(lineNames, "|"))
+	return time.Time{}, fmt.Errorf("No route found for lines %q", strings.Join(lineNames, "|"))
 }
 
 func stringSliceContains(slice []string, subject string) bool {
