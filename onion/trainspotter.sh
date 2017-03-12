@@ -16,13 +16,13 @@ do
     BODY=${MESSAGE#* }
     case $STATUS in
         GO)
-            expled 0xffffff > /dev/null
+            expled 0x00ff00 > /dev/null
             ;;
         WAIT)
-            expled 0x000000 > /dev/null
+            expled 0x0000ff > /dev/null
             ;;
         ERROR)
-            shut_off_led
+            expled 0xff0000 > /dev/null
             ;;
     esac
 done
