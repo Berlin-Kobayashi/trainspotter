@@ -15,11 +15,10 @@ If you are an Onioneer you can take a look into the onion folder which contains 
 ### Ideas
 Priority|Idea
 ---|---
-1|Make multiple lineNames configurable
-2|Add environment variable for API key
-3|Add a separate command for searching for place IDs and lineNames
-4|Rewrite frontend in go
-5|Add support for config files instead of arguments and options
+1|Add environment variable for API key
+2|Add a separate command for searching for place IDs and lineNames
+3|Rewrite frontend in go
+4|Add support for config files instead of arguments and options
 
 ## License
 [**MIT**](http://www.opensource.org/licenses/mit-license.php)

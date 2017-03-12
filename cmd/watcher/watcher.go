@@ -5,6 +5,7 @@ import (
 	"flag"
 	"os"
 	"github.com/DanShu93/trainspotter/departure"
+	"strings"
 )
 
 func main() {
@@ -26,6 +27,6 @@ func main() {
 	origin := args[1]
 	destination := args[2]
 	transitMode := args[3]
-	lineName := args[4]
-	departure.Watch(duration, throttle, bufferTime, offsetTime, apiKey, origin, destination, transitMode, lineName)
+	lineNames := strings.Split(args[4], "|")
+	departure.Watch(duration, throttle, bufferTime, offsetTime, apiKey, origin, destination, transitMode, lineNames)
 }

@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"encoding/json"
 	"net/url"
+	"strings"
 )
 
 type direction struct {
@@ -27,7 +28,7 @@ type direction struct {
 	}
 }
 
-func (d *direction) getDepartureTime(lineName string) (time.Time, error) {
+func (d *direction) getDepartureTime(lineNames []string) (time.Time, error) {
 	if d.Status != "OK" {
 		return time.Time{}, fmt.Errorf("direction status was not OK but %s", d.Status)
 	}
@@ -40,7 +41,7 @@ func (d *direction) getDepartureTime(lineName string) (time.Time, error) {
 			for _, step := range route.Legs[0].Steps {
 				if step.TravelMode == "TRANSIT" {
 					transitSteps++
-					if step.TransitDetails.Line.ShortName == lineName {
+					if stringSliceContains(lineNames, step.TransitDetails.Line.ShortName) {
 						hasLine = true
 						depTimestamp = step.TransitDetails.DepartureTime.Value
 					}
@@ -55,16 +56,25 @@ func (d *direction) getDepartureTime(lineName string) (time.Time, error) {
 		}
 	}
 
-	return time.Time{}, fmt.Errorf("No route found for line %s", lineName)
+	return time.Time{}, fmt.Errorf("No route found for lines %s", strings.Join(lineNames, "|"))
 }
 
-func GetDepartureTime(origin, destination, apiKey, transitMode, lineName string, desiredDepTime time.Time) (time.Time, error) {
+func stringSliceContains(slice []string, subject string) bool {
+	for _, s := range slice {
+		if s == subject {
+			return true
+		}
+	}
+	return false
+}
+
+func GetDepartureTime(origin, destination, apiKey, transitMode string, lineNames []string, desiredDepTime time.Time) (time.Time, error) {
 	query := createQuery(origin, destination, apiKey, transitMode, desiredDepTime)
 
 	var direction direction
 	getJson(query, &direction)
 
-	depTime, err := direction.getDepartureTime(lineName)
+	depTime, err := direction.getDepartureTime(lineNames)
 
 	return depTime, err
 }

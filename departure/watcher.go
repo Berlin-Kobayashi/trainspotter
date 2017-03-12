@@ -5,13 +5,13 @@ import (
 	"fmt"
 )
 
-func Watch(duration, throttle, bufferTime, offsetTime int, apiKey, origin, destination, transitMode, lineName string) {
-	printStatus(bufferTime, offsetTime, apiKey, origin, destination, transitMode, lineName)
+func Watch(duration, throttle, bufferTime, offsetTime int, apiKey, origin, destination, transitMode string, lineNames []string) {
+	printStatus(bufferTime, offsetTime, apiKey, origin, destination, transitMode, lineNames)
 
 	ticker := time.NewTicker(time.Second * time.Duration(throttle))
 	go func() {
 		for range ticker.C {
-			printStatus(bufferTime, offsetTime, apiKey, origin, destination, transitMode, lineName)
+			printStatus(bufferTime, offsetTime, apiKey, origin, destination, transitMode, lineNames)
 		}
 	}()
 
@@ -21,14 +21,14 @@ func Watch(duration, throttle, bufferTime, offsetTime int, apiKey, origin, desti
 	fmt.Println("DONE")
 }
 
-func printStatus(bufferTime, offsetTime int, apiKey, origin, destination, transitMode, lineName string) {
-	status := getStatus(bufferTime, offsetTime, apiKey, origin, destination, transitMode, lineName)
+func printStatus(bufferTime, offsetTime int, apiKey, origin, destination, transitMode string, lineNames []string) {
+	status := getStatus(bufferTime, offsetTime, apiKey, origin, destination, transitMode, lineNames)
 	fmt.Println(status)
 }
 
-func getStatus(bufferTime, offsetTime int, apiKey, origin, destination, transitMode, lineName string) string {
+func getStatus(bufferTime, offsetTime int, apiKey, origin, destination, transitMode string, lineNames []string) string {
 	desiredDepTime := time.Now().Add(time.Duration(offsetTime) * time.Second)
-	depTime, err := GetDepartureTime(origin, destination, apiKey, transitMode, lineName, desiredDepTime)
+	depTime, err := GetDepartureTime(origin, destination, apiKey, transitMode, lineNames, desiredDepTime)
 	if err != nil {
 		return fmt.Sprintf("ERROR %s", err)
 	} else {
