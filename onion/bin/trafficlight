@@ -26,3 +26,5 @@ do
             ;;
     esac
 done
+
+shut_off_led
