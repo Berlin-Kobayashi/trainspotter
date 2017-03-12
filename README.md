@@ -28,8 +28,8 @@ If your Onion Omega is connected to an expansion dock you can pipe the output of
 ### Ideas
 Priority|Idea
 ---|---
-1|Use flag.FlagSet to enable sub commands
-2|Add unit tests
+1|Add unit tests
+2|Use flag.FlagSet to enable sub commands
 3|Add separate command for searching for place IDs and lineNames
 4|Rewrite trafficlight in go
 5|Add support for config files instead of arguments and options
