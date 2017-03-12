@@ -3,7 +3,7 @@
 DIR=$(dirname $0)
 
 shut_off_led() {
-   sh "$DIR"/expled-off.sh > /dev/null
+   sh "$DIR"/expled-off > /dev/null
 }
 shut_off_led
 trap shut_off_led SIGHUP SIGINT SIGTERM

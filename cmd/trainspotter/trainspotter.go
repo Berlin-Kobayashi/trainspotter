@@ -14,13 +14,24 @@ const apiKeyEnvVName = "TRAINSPOTTER_MAPS_API_KEY"
 var argumentUsage = []string{"<origin>", "<destination>", "<transit_mode>", "<line_name>"}
 
 func main() {
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
+		fmt.Fprintf(os.Stderr, "%s %s\n\n", os.Args[0], strings.Join(argumentUsage, " "))
+		fmt.Fprintln(os.Stderr, "Options: ")
+		flag.PrintDefaults()
+	}
+
 	var duration, throttle, bufferTime, offsetTime int
 	var apiKey string
 	flag.IntVar(&duration, "duration", 0, "This program runs for <throttle> seconds.")
 	flag.IntVar(&throttle, "throttle", 60, "This program runs every <throttle> seconds.")
 	flag.IntVar(&bufferTime, "buffer", 600, "This program warns you <buffer> seconds before your line arives.")
 	flag.IntVar(&offsetTime, "offset", 0, "This program assumes that you need <offset> seconds to catch your line.")
-	flag.StringVar(&apiKey, apiKeyOptionName, "", "This program uses <key> as the API key for the Google Maps APIs.")
+	flag.StringVar(&apiKey, apiKeyOptionName, "", fmt.Sprintf(
+		"This program uses <%s> as the API key for the Google Maps APIs. It will overwrite the environment variable <%s>.",
+		apiKeyOptionName,
+		apiKeyEnvVName,
+	))
 
 	flag.Parse()
 

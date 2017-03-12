@@ -7,17 +7,31 @@ Trainspotter is a CLI tool which lets you monitor the time it will take until a 
 - an Google Maps API key 
 
 ### Running Trainspotter
-TODO once command line interface is stable 
+Run `go run cmd/trainspotter/trainspotter.go -h` for usage information.
+
+The trainspotter command will return a stream of messages on stdout. Like:
+
+`WAIT 10`
+
+`GO 60`
+
+`ERROR No route found for lines "M1"`
+
+`DONE`
 
 ### Onion Omega
 If you are an Onioneer you can take a look into the onion folder which contains scripts for cross compiling go for [MIPS](https://en.wikipedia.org/wiki/MIPS_instruction_set) and for interacting with Onion Omega components.    
 
+#### Expansion dock LED
+If your Onion Omega is connected to an expansion dock you can pipe the output of the trainspotter command to onion/bin/trafficlight to let the LED represent the current status.   
+
 ### Ideas
 Priority|Idea
 ---|---
-1|Add a separate command for searching for place IDs and lineNames
-2|Rewrite frontend in go
-3|Add support for config files instead of arguments and options
+1|Add min buffer time option
+2|Add separate command for searching for place IDs and lineNames
+3|Rewrite frontend in go
+4|Add support for config files instead of arguments and options
 
 ## License
 [**MIT**](http://www.opensource.org/licenses/mit-license.php)
