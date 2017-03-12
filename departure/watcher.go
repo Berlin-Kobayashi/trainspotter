@@ -5,13 +5,13 @@ import (
 	"fmt"
 )
 
-func Watch(duration, throttle, bufferTime, offsetTime int, apiKey, origin, destination, transitMode string, lineNames []string) {
-	printStatus(bufferTime, offsetTime, apiKey, origin, destination, transitMode, lineNames)
+func Watch(duration, throttle, bufferMin, bufferMax, offsetTime int, apiKey, origin, destination, transitMode string, lineNames []string) {
+	printStatus(bufferMin, bufferMax, offsetTime, apiKey, origin, destination, transitMode, lineNames)
 
 	ticker := time.NewTicker(time.Second * time.Duration(throttle))
 	go func() {
 		for range ticker.C {
-			printStatus(bufferTime, offsetTime, apiKey, origin, destination, transitMode, lineNames)
+			printStatus(bufferMin, bufferMax, offsetTime, apiKey, origin, destination, transitMode, lineNames)
 		}
 	}()
 
@@ -21,12 +21,12 @@ func Watch(duration, throttle, bufferTime, offsetTime int, apiKey, origin, desti
 	fmt.Println("DONE")
 }
 
-func printStatus(bufferTime, offsetTime int, apiKey, origin, destination, transitMode string, lineNames []string) {
-	status := getStatus(bufferTime, offsetTime, apiKey, origin, destination, transitMode, lineNames)
+func printStatus(bufferMin, bufferMax, offsetTime int, apiKey, origin, destination, transitMode string, lineNames []string) {
+	status := getStatus(bufferMin, bufferMax, offsetTime, apiKey, origin, destination, transitMode, lineNames)
 	fmt.Println(status)
 }
 
-func getStatus(bufferTime, offsetTime int, apiKey, origin, destination, transitMode string, lineNames []string) string {
+func getStatus(bufferMin, bufferMax, offsetTime int, apiKey, origin, destination, transitMode string, lineNames []string) string {
 	desiredDepTime := time.Now().Add(time.Duration(offsetTime) * time.Second)
 	depTime, err := GetDepartureTime(origin, destination, apiKey, transitMode, lineNames, desiredDepTime)
 	if err != nil {
@@ -35,7 +35,7 @@ func getStatus(bufferTime, offsetTime int, apiKey, origin, destination, transitM
 		until := time.Until(depTime)
 		untilSeconds := int(until.Seconds()) - offsetTime
 
-		if untilSeconds < bufferTime {
+		if untilSeconds >= bufferMin && untilSeconds <= bufferMax {
 			return fmt.Sprintf("GO %d", untilSeconds)
 		} else {
 			return fmt.Sprintf("WAIT %d", untilSeconds)

@@ -21,11 +21,12 @@ func main() {
 		flag.PrintDefaults()
 	}
 
-	var duration, throttle, bufferTime, offsetTime int
+	var duration, throttle, bufferMin, bufferMax, offsetTime int
 	var apiKey string
 	flag.IntVar(&duration, "duration", 0, "This program runs for <throttle> seconds.")
 	flag.IntVar(&throttle, "throttle", 60, "This program runs every <throttle> seconds.")
-	flag.IntVar(&bufferTime, "buffer", 600, "This program warns you <buffer> seconds before your line arives.")
+	flag.IntVar(&bufferMin, "buffer-min", 0, "This program warns you atleast <buffer> seconds before your line arives.")
+	flag.IntVar(&bufferMax, "buffer-max", 600, "This program warns you atmost <buffer> seconds before your line arives.")
 	flag.IntVar(&offsetTime, "offset", 0, "This program assumes that you need <offset> seconds to catch your line.")
 	flag.StringVar(&apiKey, apiKeyOptionName, "", fmt.Sprintf(
 		"This program uses <%s> as the API key for the Google Maps APIs. It will overwrite the environment variable <%s>.",
@@ -55,5 +56,5 @@ func main() {
 	destination := args[1]
 	transitMode := args[2]
 	lineNames := strings.Split(args[3], "|")
-	departure.Watch(duration, throttle, bufferTime, offsetTime, apiKey, origin, destination, transitMode, lineNames)
+	departure.Watch(duration, throttle, bufferMin, bufferMax, offsetTime, apiKey, origin, destination, transitMode, lineNames)
 }
