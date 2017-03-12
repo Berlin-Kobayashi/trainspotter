@@ -4,7 +4,7 @@ Trainspotter is a CLI tool which lets you monitor the time it will take until a 
 ## Getting started
 ### Requirements
 - at least go 1.8
-- an Google Maps API key 
+- [Google Maps API key](https://developers.google.com/maps/documentation/javascript/get-api-key) 
 
 ### Running Trainspotter
 Run `go run cmd/trainspotter/trainspotter.go -h` for usage information.
