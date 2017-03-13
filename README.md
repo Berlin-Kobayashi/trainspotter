@@ -20,7 +20,7 @@ The trainspotter command will return a stream of messages on stdout. Like:
 `DONE`
 
 ### Onion Omega
-If you are an Onioneer you can take a look into the onion folder which contains scripts for cross compiling go for [MIPS](https://en.wikipedia.org/wiki/MIPS_instruction_set) and for interacting with Onion Omega components.    
+If you are an Onioneer you can take a look into the bin folder which contains scripts for cross compiling go for [MIPS](https://en.wikipedia.org/wiki/MIPS_instruction_set) and for interacting with Onion Omega components.    
 
 #### Expansion dock LED
 If your Onion Omega is connected to an expansion dock you can pipe the output of the trainspotter command to onion/bin/trafficlight to let the LED represent the current status.   
@@ -30,8 +30,8 @@ Priority|Idea
 ---|---
 1|Add unit tests
 2|Use flag.FlagSet to enable sub commands
-3|Add separate command for searching for place IDs and lineNames
-4|Rewrite trafficlight in go
+3|Rewrite commands in bin folder to go sub commands
+4|Add sub commands for searching for place IDs and lineNames
 5|Add support for config files instead of arguments and options
 
 ## License
