@@ -1,4 +1,4 @@
-#Trainspotter
+# Trainspotter
 Trainspotter is a CLI tool which lets you monitor the time it will take until a specific train or bus arrives at a certain station using the Google Maps APIs.
 
 ## Getting started
@@ -28,11 +28,12 @@ If your Onion Omega is connected to an expansion dock you can pipe the output of
 ### Ideas
 Priority|Idea
 ---|---
-1|Add unit tests
-2|Use flag.FlagSet to enable sub commands
-3|Rewrite commands in bin folder to go sub commands
-4|Add sub commands for searching for place IDs and lineNames
-5|Add support for config files instead of arguments and options
+1|Add --walk option
+2|Add unit tests
+3|Use flag.FlagSet to enable sub commands
+4|Rewrite commands in bin folder to go sub commands
+5|Add sub commands for searching for place IDs and lineNames
+6|Add support for config files instead of arguments and options
 
 ## License
 [**MIT**](http://www.opensource.org/licenses/mit-license.php)
