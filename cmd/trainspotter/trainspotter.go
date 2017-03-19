@@ -23,6 +23,7 @@ func main() {
 
 	var duration, throttle, bufferMin, bufferMax, offsetTime int
 	var apiKey string
+	var isWalk bool
 	flag.IntVar(&duration, "duration", 0, "This program runs for <throttle> seconds.")
 	flag.IntVar(&throttle, "throttle", 60, "This program runs every <throttle> seconds.")
 	flag.IntVar(&bufferMin, "buffer-min", 0, "This program warns you atleast <buffer> seconds before your line arives.")
@@ -33,6 +34,7 @@ func main() {
 		apiKeyOptionName,
 		apiKeyEnvVName,
 	))
+	flag.BoolVar(&isWalk, "walk", false, "If this option is set to true the route may involve walking.")
 
 	flag.Parse()
 
@@ -56,5 +58,5 @@ func main() {
 	destination := args[1]
 	transitMode := args[2]
 	lineNames := strings.Split(args[3], "|")
-	departure.Watch(duration, throttle, bufferMin, bufferMax, offsetTime, apiKey, origin, destination, transitMode, lineNames)
+	departure.Watch(duration, throttle, bufferMin, bufferMax, offsetTime, apiKey, origin, destination, transitMode, lineNames, isWalk)
 }

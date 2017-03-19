@@ -5,13 +5,25 @@ import (
 	"fmt"
 )
 
-func Watch(duration, throttle, bufferMin, bufferMax, offsetTime int, apiKey, origin, destination, transitMode string, lineNames []string) {
-	printStatus(bufferMin, bufferMax, offsetTime, apiKey, origin, destination, transitMode, lineNames)
+func Watch(
+	duration,
+	throttle,
+	bufferMin,
+	bufferMax,
+	offsetTime int,
+	apiKey,
+	origin,
+	destination,
+	transitMode string,
+	lineNames []string,
+	isWalk bool,
+) {
+	printStatus(bufferMin, bufferMax, offsetTime, apiKey, origin, destination, transitMode, lineNames, isWalk)
 
 	ticker := time.NewTicker(time.Second * time.Duration(throttle))
 	go func() {
 		for range ticker.C {
-			printStatus(bufferMin, bufferMax, offsetTime, apiKey, origin, destination, transitMode, lineNames)
+			printStatus(bufferMin, bufferMax, offsetTime, apiKey, origin, destination, transitMode, lineNames, isWalk)
 		}
 	}()
 
@@ -21,14 +33,24 @@ func Watch(duration, throttle, bufferMin, bufferMax, offsetTime int, apiKey, ori
 	fmt.Println("DONE")
 }
 
-func printStatus(bufferMin, bufferMax, offsetTime int, apiKey, origin, destination, transitMode string, lineNames []string) {
-	status := getStatus(bufferMin, bufferMax, offsetTime, apiKey, origin, destination, transitMode, lineNames)
+func printStatus(
+	bufferMin,
+	bufferMax,
+	offsetTime int,
+	apiKey,
+	origin,
+	destination,
+	transitMode string,
+	lineNames []string,
+	isWalk bool,
+) {
+	status := getStatus(bufferMin, bufferMax, offsetTime, apiKey, origin, destination, transitMode, lineNames, isWalk)
 	fmt.Println(status)
 }
 
-func getStatus(bufferMin, bufferMax, offsetTime int, apiKey, origin, destination, transitMode string, lineNames []string) string {
+func getStatus(bufferMin, bufferMax, offsetTime int, apiKey, origin, destination, transitMode string, lineNames []string, isWalk bool) string {
 	desiredDepTime := time.Now().Add(time.Duration(offsetTime) * time.Second)
-	depTime, err := GetDepartureTime(origin, destination, apiKey, transitMode, lineNames, desiredDepTime)
+	depTime, err := GetDepartureTime(origin, destination, apiKey, transitMode, lineNames, desiredDepTime, isWalk)
 	if err != nil {
 		return fmt.Sprintf("ERROR %s", err)
 	} else {

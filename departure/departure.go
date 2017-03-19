@@ -28,7 +28,7 @@ type direction struct {
 	}
 }
 
-func (d *direction) getDepartureTime(lineNames []string) (time.Time, error) {
+func (d *direction) getDepartureTime(lineNames []string, isWalk bool) (time.Time, error) {
 	if d.Status != "OK" {
 		return time.Time{}, fmt.Errorf("direction status was not OK but %s", d.Status)
 	}
@@ -39,6 +39,10 @@ func (d *direction) getDepartureTime(lineNames []string) (time.Time, error) {
 			hasLine := false
 			var depTimestamp int64
 			for _, step := range route.Legs[0].Steps {
+				if !isWalk && step.TravelMode == "WALKING" {
+					break
+				}
+
 				if step.TravelMode == "TRANSIT" {
 					transitSteps++
 					if stringSliceContains(lineNames, step.TransitDetails.Line.ShortName) {
@@ -68,13 +72,13 @@ func stringSliceContains(slice []string, subject string) bool {
 	return false
 }
 
-func GetDepartureTime(origin, destination, apiKey, transitMode string, lineNames []string, desiredDepTime time.Time) (time.Time, error) {
+func GetDepartureTime(origin, destination, apiKey, transitMode string, lineNames []string, desiredDepTime time.Time, isWalk bool) (time.Time, error) {
 	query := createQuery(origin, destination, apiKey, transitMode, desiredDepTime)
 
 	var direction direction
 	getJson(query, &direction)
 
-	depTime, err := direction.getDepartureTime(lineNames)
+	depTime, err := direction.getDepartureTime(lineNames, isWalk)
 
 	return depTime, err
 }
