@@ -18,6 +18,9 @@ do
         GO)
             expled 0x00ff00 > /dev/null
             ;;
+        HURRY)
+            expled 0xff00ff > /dev/null
+            ;;
         WAIT)
             expled 0x0000ff > /dev/null
             ;;

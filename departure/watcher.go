@@ -57,8 +57,12 @@ func getStatus(bufferMin, bufferMax, offsetTime int, apiKey, origin, destination
 		until := time.Until(depTime)
 		untilSeconds := int(until.Seconds()) - offsetTime
 
-		if untilSeconds >= bufferMin && untilSeconds <= bufferMax {
-			return fmt.Sprintf("GO %d", untilSeconds)
+		if untilSeconds <= bufferMax {
+			if untilSeconds < bufferMin {
+				return fmt.Sprintf("HURRY %d", untilSeconds)
+			} else {
+				return fmt.Sprintf("GO %d", untilSeconds)
+			}
 		} else {
 			return fmt.Sprintf("WAIT %d", untilSeconds)
 		}
