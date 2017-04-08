@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"net/url"
 	"strings"
+	"strconv"
 )
 
 type direction struct {
@@ -84,18 +85,21 @@ func GetDepartureTime(origin, destination, apiKey, transitMode string, lineNames
 }
 
 func createQuery(origin, destination, apiKey, transitMode string, desiredDepTime time.Time) string {
-	baseUrl := "https://maps.googleapis.com/maps/api/directions/json"
-	query := fmt.Sprintf(
-		"%s?departure_time=%d&origin=%s&destination=%s&key=%s&mode=transit&transit_mode=%s&language=en&alternatives=true",
-		baseUrl,
-		desiredDepTime.Unix(),
-		url.QueryEscape(origin),
-		url.QueryEscape(destination),
-		url.QueryEscape(apiKey),
-		url.QueryEscape(transitMode),
-	)
+	query, _ := url.Parse("https://maps.googleapis.com/maps/api/directions/json")
 
-	return query
+	params := url.Values{}
+	params.Set("departure_time", strconv.FormatInt(desiredDepTime.Unix(), 10))
+	params.Set("origin", origin)
+	params.Set("destination", destination)
+	params.Set("key", apiKey)
+	params.Set("mode", "transit")
+	params.Set("transit_mode", transitMode)
+	params.Set("language", "en")
+	params.Set("alternatives", "true")
+
+	query.RawQuery = params.Encode()
+
+	return query.String()
 }
 
 func getJson(url string, target interface{}) error {
