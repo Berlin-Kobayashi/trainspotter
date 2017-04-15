@@ -1,0 +1,9 @@
+#!/bin/sh
+
+oled-exp -i -q
+
+while read MESSAGE
+do
+    echo "$MESSAGE"
+    oled-exp -q write "$MESSAGE"
+done
