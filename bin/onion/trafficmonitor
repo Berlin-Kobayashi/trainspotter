@@ -1,9 +1,15 @@
 #!/bin/sh
 
+clear_screen() {
+   oled-exp -i -q -c
+}
+clear_screen
+trap clear_screen SIGHUP SIGINT SIGTERM
+
 oled-exp -i -q
 
 while read MESSAGE
 do
     echo "$MESSAGE"
-    oled-exp -q write "$MESSAGE"
+    oled-exp -q -c write "$MESSAGE"
 done
